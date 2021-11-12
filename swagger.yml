@@ -1,0 +1,209 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Schedule API Generator
+  description: API to generate schedule for school lesson
+
+servers:
+  - url: https://example.io/v1
+paths:
+  /teachers:
+    get:
+      description: Returns a list of teachers
+      #  ----- Added lines  ----------------------------------------
+      responses:
+        '200':
+          description: Successfully returned a list of teachers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Teacher'
+  /teacher:
+    get:
+      description: Return a teacher by name
+      parameters:
+        - name: name
+          in: query
+          description: name of teacher
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully returned a teacher by specific name
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Teacher'
+    post:
+      description: Lets a user post a new teacher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+      responses:
+        '200':
+          description: Successfully created a new teacher
+  /teacher/{id}:
+    get:
+      description: Return teacher by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned a teacher by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+    put:
+      description: Lets a user edit a teacher
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+      responses:
+        '200':
+          description: Successfully edited a teacher
+    delete:
+      description: Lets a user delete a teacher
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted a teacher
+  /lessons:
+    get:
+      description: Returns a list of lessons
+      #  ----- Added lines  ----------------------------------------
+      responses:
+        '200':
+          description: Successfully returned a list of lessons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lesson'
+  /lesson:
+    get:
+      description: Return a lesson by name
+      parameters:
+        - name: name
+          in: query
+          description: name of lesson
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully returned a lesson by specific name
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lesson'
+    post:
+      description: Lets a user post a new lesson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+      responses:
+        '200':
+          description: Successfully created a new lesson
+  /lesson/{id}:
+    get:
+      description: Return lesson by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned a lesson by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+    put:
+      description: Lets a user edit a lesson
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+      responses:
+        '200':
+          description: Successfully edited a lesson
+    delete:
+      description: Lets a user delete a lesson
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted a lesson
+components:
+  schemas:
+    Teacher:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        gender:
+          type: boolean
+        address:
+          type: string
+        status:
+          type: boolean
+    Lesson:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        meetings_per_week: 
+          type: integer
+        class: 
+          type: string
+        major: 
+          type: string
