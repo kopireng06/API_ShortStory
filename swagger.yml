@@ -7,51 +7,57 @@ info:
 servers:
   - url: https://example.io/v1
 paths:
-  /teachers:
+  /authors:
     get:
-      description: Returns a list of teachers
-      #  ----- Added lines  ----------------------------------------
+      description: Return a list of author
       responses:
         '200':
-          description: Successfully returned a list of teachers
+          description: list author
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Teacher'
-  /teacher:
+                  $ref: '#/components/schemas/Author'
+                  # allOf:
+                  #   - $ref: '#/components/schemas/Author'
+                  # properties:
+                  #   telo: 
+                  #     type: array
+                  #     items:
+                  #       $ref: '#/components/schemas/ShortStory'
+  /author:
     get:
-      description: Return a teacher by name
+      description: Return a list author by name
       parameters:
         - name: name
           in: query
-          description: name of teacher
+          description: name of author
           schema:
             type: string
       responses:
         '200':
-          description: Successfully returned a teacher by specific name
+          description: Successfully returned a list of authors by specific name
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Teacher'
+                  $ref: '#/components/schemas/Author'
     post:
-      description: Lets a user post a new teacher
+      description: Create a new author
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Teacher'
+              $ref: '#/components/schemas/Author'
       responses:
         '200':
           description: Successfully created a new teacher
-  /teacher/{id}:
+  /author/{id}:
     get:
-      description: Return teacher by id
+      description: Return an author by id
       parameters:
         - name: id
           in: path
@@ -60,13 +66,13 @@ paths:
             type: integer
       responses:
         '200':
-          description: Successfully returned a teacher by id
+          description: Successfully returned a author by id
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Teacher'
+                $ref: '#/components/schemas/Author'
     put:
-      description: Lets a user edit a teacher
+      description: Edit an author by specific id
       parameters:
         - name: id
           in: path
@@ -78,12 +84,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Teacher'
+              $ref: '#/components/schemas/Author'
       responses:
         '200':
-          description: Successfully edited a teacher
+          description: Successfully edited a author
     delete:
-      description: Lets a user delete a teacher
+      description: delete an author by specific id
       parameters:
         - name: id
           in: path
@@ -93,51 +99,49 @@ paths:
       responses:
         '200':
           description: Successfully deleted a teacher
-  /lessons:
+  /short_storys:
     get:
-      description: Returns a list of lessons
-      #  ----- Added lines  ----------------------------------------
-      responses:
-        '200':
-          description: Successfully returned a list of lessons
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Lesson'
-  /lesson:
-    get:
-      description: Return a lesson by name
+      description: Return a list of short story
       parameters:
-        - name: name
-          in: query
-          description: name of lesson
+        - in: query
+          name: title
           schema:
             type: string
+          description: title of short story to return
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
       responses:
         '200':
-          description: Successfully returned a lesson by specific name
+          description: list author
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Lesson'
+                  $ref: '#/components/schemas/ShortStory'
+  /short_story:
     post:
-      description: Lets a user post a new lesson
+      description: Create a new short story
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Lesson'
+              $ref: '#/components/schemas/ShortStory'
       responses:
         '200':
-          description: Successfully created a new lesson
-  /lesson/{id}:
+          description: Successfully created a new short story
+  /short_story/{id}:
     get:
-      description: Return lesson by id
+      description: Return an short story by id
       parameters:
         - name: id
           in: path
@@ -146,13 +150,13 @@ paths:
             type: integer
       responses:
         '200':
-          description: Successfully returned a lesson by id
+          description: Successfully returned a short story by id
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Lesson'
+                $ref: '#/components/schemas/ShortStory'
     put:
-      description: Lets a user edit a lesson
+      description: Edit a short story by specific id
       parameters:
         - name: id
           in: path
@@ -164,12 +168,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Lesson'
+              $ref: '#/components/schemas/ShortStory'
       responses:
         '200':
-          description: Successfully edited a lesson
+          description: Successfully edited a short story
     delete:
-      description: Lets a user delete a lesson
+      description: delete an short story by specific id
       parameters:
         - name: id
           in: path
@@ -178,32 +182,340 @@ paths:
             type: integer
       responses:
         '200':
-          description: Successfully deleted a lesson
+          description: Successfully deleted a short story
+  /poems:
+    get:
+      description: Return a list of poems
+      parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+          description: title of poem to return
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+      responses:
+        '200':
+          description: list poem
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Poem'
+  /poem:
+    post:
+      description: Create a new poem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Poem'
+      responses:
+        '200':
+          description: Successfully created a new poem
+  /poem/{id}:
+    get:
+      description: Return a poem by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned a poem by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poem'
+    put:
+      description: Edit a poem by specific id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Poem'
+      responses:
+        '200':
+          description: Successfully edited a poem
+    delete:
+      description: delete an poem by specific id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted a poem
+  /categories_short_story:
+    get:
+      description: Return a list of categories short story
+      responses:
+        '200':
+          description: list poem
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryShortStory'
+  /category_short_story:
+    post:
+      description: Create a new category short story
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryShortStory'
+      responses:
+        '200':
+          description: Successfully created a new category short story
+  /category_short_story/{id}:
+    get:
+      description: Return a category short story by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned a category short story by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryShortStory'
+    put:
+      description: Edit a category short story by specific id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryShortStory'
+      responses:
+        '200':
+          description: Successfully edited a category short story
+    delete:
+      description: delete a category short story by specific id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted a category short 
+  /categories_poem:
+    get:
+      description: Return a list of categories poem story
+      responses:
+        '200':
+          description: list poem
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryPoem'
+  /category_poem:
+    post:
+      description: Create a new category poem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryPoem'
+      responses:
+        '200':
+          description: Successfully created a new category poem
+  /category_poem/{id}:
+    get:
+      description: Return a category poem by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully returned a category poem by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryPoem'
+    put:
+      description: Edit a category poem by specific id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryPoem'
+      responses:
+        '200':
+          description: Successfully edited a category poem
+    delete:
+      description: delete a category poem by specific id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted a category spoem
 components:
   schemas:
-    Teacher:
+    Author:
       type: object
       properties:
         id:
-          type: string
-        name:
-          type: string
-        gender:
-          type: boolean
-        address:
-          type: string
-        status:
-          type: boolean
-    Lesson:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        meetings_per_week: 
           type: integer
-        class: 
+        name:
           type: string
-        major: 
+        email:
           type: string
+        password:
+          type: string
+        profile:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      example: 
+        id: 1
+        name: "Naufal Ghani A"
+        email: "naufalghaniachmani@gmail.com"
+        password: "qiyh4XPJGsOZ2MEAyLkfWqeQ"
+        profile : "Suka nulis juga suka ngetik"
+        created_at: "2017-07-21T17:32:28Z"
+        updated_at: "2017-07-21T17:32:28Z"
+    ShortStory:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        concated_title:
+          type: string
+        content:
+          type: string
+        id_category: 
+          type: integer
+        id_author:
+          type: integer
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      example:
+        id: 1
+        title: "Sisi tak terlihat"
+        concated-title: "sisi-tak-terlihat"
+        content: "Lorem ipsum dolor sit amet"
+        id_category: 1
+        id_author: 1
+        created_at: "2017-07-21T17:32:28Z"
+        updated_at: "2017-07-21T17:32:28Z"
+    Poem:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        concated_title:
+          type: string
+        content:
+          type: string
+        id_category: 
+          type: integer
+        id_author:
+          type: integer
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      example:
+        id: 1
+        title: "Aku ingin"
+        concated-title: "aku-ingin"
+        content: "Lorem ipsum dolor sit amet"
+        id_category: 1
+        id_author: 1
+        created_at: "2017-07-21T17:32:28Z"
+        updated_at: "2017-07-21T17:32:28Z"
+    CategoryShortStory: 
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      example:
+        id: 1
+        name: "kehidupan"
+        created_at: "2017-07-21T17:32:28Z"
+        updated_at: "2017-07-21T17:32:28Z"
+    CategoryPoem: 
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      example:
+        id: 1
+        name: "cinta"
+        created_at: "2017-07-21T17:32:28Z"
+        updated_at: "2017-07-21T17:32:28Z"
+    

@@ -1,48 +1,26 @@
 package main
 
-import "fmt"
+import (
+	"api_short_story/app/routes"
+	authorUsecase "api_short_story/business/authors"
+	authorController "api_short_story/controllers/authors"
+	authorRepo "api_short_story/drivers/databases/authors"
+	"api_short_story/drivers/mysql"
 
-type cetak interface {
-	getNama() string
-	getNIM() string
-}
-
-type mahasiswa struct {
-	nama string
-	nim  string
-}
-
-func (m mahasiswa) getNama() string {
-	return m.nama
-}
-
-func (m mahasiswa) getNIM() string {
-	return m.nim
-}
-
-func cobaInterface(n cetak) {
-	fmt.Println(n)
-}
+	"github.com/labstack/echo/v4"
+)
 
 func main() {
-	// configs.ConnectDB()
-	// e := echo.New()
+	db := mysql.InitialDb()
+	e := echo.New()
+	authorRepoInterface := authorRepo.NewAuthorRepository(db)
+	authorUseCaseInterface := authorUsecase.NewUseCase(authorRepoInterface)
+	authorControllerInterface := authorController.NewAuthorController(authorUseCaseInterface)
 
-	// // group routes for author
-	// eAuthor := e.Group("/author")
-	// eAuthor.POST("/", controllers.InsertAuthor)
-	// eAuthor.GET("/:id", controllers.GetAuthorById)
-	// eAuthor.GET("/search/:name", controllers.GetAuthorByName)
-	// eAuthor.GET("/", controllers.GetAuthor)
+	routesInit := routes.RouteControllerList{
+		AuthorController: *authorControllerInterface,
+	}
 
-	// // group routes for category
-	// eCategory := e.Group("/category")
-	// eCategory.POST("/", controllers.InsertCategory)
-	// eCategory.GET("/", controllers.GetCategory)
-
-	// e.Start(":8000")
-	a := mahasiswa{"naufal", "01"}
-	fmt.Println(a.getNIM())
-	cobaInterface(a)
-
+	routesInit.RouteRegister(e)
+	e.Start(":8000")
 }
