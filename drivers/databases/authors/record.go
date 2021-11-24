@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+// untuk database (repo)
+//ditambahkan gorm
 type Author struct {
 	Id        uint
 	CreatedAt time.Time
