@@ -32,7 +32,7 @@ func (controller *CategoryController) GetCategoryById(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	category, err := controller.usecase.GetCategoryById(id)
 	if err != nil {
-		return controllers.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return controllers.ErrorResponse(c, http.StatusNotFound, err.Error())
 	}
 	return controllers.SuccessResponse(c, response.FromCategoryEntity(category))
 }
@@ -68,7 +68,7 @@ func (controller *CategoryController) DeleteCategory(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	category, err := controller.usecase.DeleteCategory(id)
 	if err != nil {
-		return controllers.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return controllers.ErrorResponse(c, http.StatusNotFound, err.Error())
 	}
 	deleteCategory := response.DeleteCategory{Id: category.Id}
 	return controllers.SuccessResponse(c, deleteCategory)

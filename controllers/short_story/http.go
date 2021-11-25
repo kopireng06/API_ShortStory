@@ -4,6 +4,7 @@ import (
 	shortstory "api_short_story/business/short_story"
 	"api_short_story/controllers"
 	"api_short_story/controllers/short_story/response"
+	"api_short_story/middlewares/token"
 	"net/http"
 	"strconv"
 
@@ -34,14 +35,16 @@ func (controller *ShortStoryController) GetShortStoryById(c echo.Context) error 
 	id, _ := strconv.Atoi(c.Param("id"))
 	shortStory, err := controller.usecase.GetShortStoryById(id)
 	if err != nil {
-		return controllers.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return controllers.ErrorResponse(c, http.StatusNotFound, err.Error())
 	}
 	return controllers.SuccessResponse(c, response.FromShortStoryEntity(shortStory))
 }
 
 func (controller *ShortStoryController) AddShortStory(c echo.Context) error {
+	idAuthor := token.GetAuthorIdFromJWT(c)
 	var storyAdd response.ShortStory
 	err := c.Bind(&storyAdd)
+	storyAdd.Id = uint(idAuthor)
 	if err != nil {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "error binding")
 	}
@@ -70,9 +73,7 @@ func (controller *ShortStoryController) DeleteShortStory(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	story, err := controller.usecase.DeleteShortStory(id)
 	if err != nil {
-		// c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-		// c.Response().WriteHeader(http.StatusBadRequest)
-		return controllers.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return controllers.ErrorResponse(c, http.StatusNotFound, err.Error())
 	}
 	deleteStory := response.DeleteShortStory{Id: story.Id}
 	return controllers.SuccessResponse(c, deleteStory)

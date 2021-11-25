@@ -8,15 +8,16 @@ import (
 //ditambahkan token
 //struct milik usecase dan global
 type AuthorEntity struct {
-	Id         uint
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	Name       string
-	Email      string
-	Password   string
-	Profile    string
-	ShortStory []shortstory.ShortStoryEntity
-	Token      string
+	Id              uint
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
+	Name            string
+	Email           string
+	Password        string
+	ConfirmPassword string
+	Profile         string
+	ShortStory      []shortstory.ShortStoryEntity
+	Token           string
 }
 
 //milik usecase

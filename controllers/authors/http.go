@@ -5,6 +5,7 @@ import (
 	"api_short_story/controllers"
 	"api_short_story/controllers/authors/request"
 	"api_short_story/controllers/authors/response"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -49,14 +50,15 @@ func (controller *AuthorController) GetAuthorById(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	author, err := controller.usecase.GetAuthorById(id)
 	if err != nil {
-		return controllers.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return controllers.ErrorResponse(c, http.StatusNotFound, err.Error())
 	}
 	return controllers.SuccessResponse(c, response.FromAuthorEntity(author))
 }
 
 func (controller *AuthorController) AddAuthor(c echo.Context) error {
-	var authorAdd response.Author
+	var authorAdd request.AuthorAdd
 	err := c.Bind(&authorAdd)
+	fmt.Println(authorAdd)
 	if err != nil {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "error binding")
 	}
@@ -85,7 +87,7 @@ func (controller *AuthorController) DeleteAuthor(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	author, err := controller.usecase.DeleteAuthor(id)
 	if err != nil {
-		return controllers.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return controllers.ErrorResponse(c, http.StatusNotFound, err.Error())
 	}
 	deleteAuthor := response.DeleteAuthor{Id: author.Id}
 	return controllers.SuccessResponse(c, deleteAuthor)

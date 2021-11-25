@@ -21,6 +21,8 @@ func SuccessResponse(c echo.Context, data interface{}) error {
 }
 
 func ErrorResponse(c echo.Context, status int, err string) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	c.Response().WriteHeader(status)
 	response := BaseReponse{}
 	response.Status = status
 	response.Message = err

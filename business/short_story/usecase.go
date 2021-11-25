@@ -35,12 +35,6 @@ func (usecase *ShortStoryUseCase) AddShortStory(shortStory ShortStoryEntity) (Sh
 	if shortStory.Content == "" {
 		return ShortStoryEntity{}, errors.New("content empty")
 	}
-	// if shortStory.AuthorID == "" {
-	// 	return ShortStoryEntity{}, errors.New("author id empty")
-	// }
-	// if shortStory.AuthorID == "" {
-	// 	return ShortStoryEntity{}, errors.New("author id empty")
-	// }
 	shortStory, err := usecase.repo.AddShortStory(shortStory)
 	if err != nil {
 		return ShortStoryEntity{}, err

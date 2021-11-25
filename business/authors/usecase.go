@@ -26,7 +26,7 @@ func (usecase *AuthorUseCase) Login(author AuthorEntity) (AuthorEntity, error) {
 		return AuthorEntity{}, err
 	}
 	if helpers.CheckSamePassword(password, author.Password) {
-		jwtClaims := token.JwtAuthorClaims{
+		jwtClaims := token.JwtClaims{
 			int(author.Id),
 			author.Name,
 			author.Email,
@@ -34,7 +34,7 @@ func (usecase *AuthorUseCase) Login(author AuthorEntity) (AuthorEntity, error) {
 				ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 			},
 		}
-		author.Token = token.GenerateAuthorJWT(jwtClaims)
+		author.Token = token.GenerateJWT(jwtClaims)
 		return author, nil
 	}
 	return AuthorEntity{}, errors.New("wrong password")
@@ -57,6 +57,7 @@ func (usecase *AuthorUseCase) GetAuthorById(id int) (AuthorEntity, error) {
 }
 
 func (usecase *AuthorUseCase) AddAuthor(author AuthorEntity) (AuthorEntity, error) {
+
 	if author.Name == "" {
 		return AuthorEntity{}, errors.New("name empty")
 	}
@@ -66,8 +67,14 @@ func (usecase *AuthorUseCase) AddAuthor(author AuthorEntity) (AuthorEntity, erro
 	if author.Password == "" {
 		return AuthorEntity{}, errors.New("password empty")
 	}
+	if author.ConfirmPassword == "" {
+		return AuthorEntity{}, errors.New("confirm password empty")
+	}
 	if author.Profile == "" {
 		return AuthorEntity{}, errors.New("profile empty")
+	}
+	if author.ConfirmPassword != author.Password {
+		return AuthorEntity{}, errors.New("password must same with confirm password")
 	}
 	hashedPassword, err2 := helpers.HashPassword(author.Password)
 	author.Password = hashedPassword
