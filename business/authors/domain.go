@@ -1,7 +1,6 @@
 package authors
 
 import (
-	shortstory "api_short_story/business/short_story"
 	"time"
 )
 
@@ -16,7 +15,7 @@ type AuthorEntity struct {
 	Password        string
 	ConfirmPassword string
 	Profile         string
-	ShortStory      []shortstory.ShortStoryEntity
+	Role            int
 	Token           string
 }
 
@@ -25,6 +24,7 @@ type AuthorUseCaseInterface interface {
 	Login(author AuthorEntity) (AuthorEntity, error)
 	GetAllAuthors() ([]AuthorEntity, error)
 	GetAuthorById(id int) (AuthorEntity, error)
+	GetAuthorsByName(name string) ([]AuthorEntity, error)
 	AddAuthor(author AuthorEntity) (AuthorEntity, error)
 	EditAuthor(id int, author AuthorEntity) (AuthorEntity, error)
 	DeleteAuthor(id int) (AuthorEntity, error)
@@ -35,6 +35,7 @@ type AuthorRepoInterface interface {
 	Login(author AuthorEntity) (AuthorEntity, error)
 	GetAllAuthors() ([]AuthorEntity, error)
 	GetAuthorById(id int) (AuthorEntity, error)
+	GetAuthorsByName(name string) ([]AuthorEntity, error)
 	AddAuthor(author AuthorEntity) (AuthorEntity, error)
 	EditAuthor(id int, author AuthorEntity) (AuthorEntity, error)
 	DeleteAuthor(id int) (AuthorEntity, error)

@@ -6,17 +6,17 @@ import (
 )
 
 type CategoryEntity struct {
-	Id         uint
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	Name       string
-	ShortStory []shortstory.ShortStoryEntity
+	Id              uint
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
+	Name            string
+	NumberOfStories int
+	ShortStory      []shortstory.ShortStoryEntity
 }
 
 //milik usecase
 type CategoryUseCaseInterface interface {
 	GetAllCategories() ([]CategoryEntity, error)
-	GetCategoryById(id int) (CategoryEntity, error)
 	AddCategory(category CategoryEntity) (CategoryEntity, error)
 	EditCategory(id int, author CategoryEntity) (CategoryEntity, error)
 	DeleteCategory(id int) (CategoryEntity, error)
@@ -25,7 +25,6 @@ type CategoryUseCaseInterface interface {
 //milik repo
 type CategoryRepoInterface interface {
 	GetAllCategories() ([]CategoryEntity, error)
-	GetCategoryById(id int) (CategoryEntity, error)
 	AddCategory(category CategoryEntity) (CategoryEntity, error)
 	EditCategory(id int, author CategoryEntity) (CategoryEntity, error)
 	DeleteCategory(id int) (CategoryEntity, error)

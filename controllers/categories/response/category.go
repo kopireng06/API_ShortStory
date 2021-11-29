@@ -2,35 +2,31 @@ package response
 
 import (
 	"api_short_story/business/categories"
-	"api_short_story/controllers/short_story/response"
 	"time"
 )
 
 type Category struct {
-	Id         uint                  `json:"id"`
-	CreatedAt  time.Time             `json:"createdAt"`
-	UpdatedAt  time.Time             `json:"updatedAt"`
-	Name       string                `json:"name"`
-	ShortStory []response.ShortStory `json:"shortStory"`
+	Id        uint      `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Name      string    `json:"name"`
 }
 
 func FromCategoryEntity(category categories.CategoryEntity) Category {
 	return Category{
-		Id:         category.Id,
-		CreatedAt:  category.CreatedAt,
-		UpdatedAt:  category.CreatedAt,
-		Name:       category.Name,
-		ShortStory: response.FromArrayShortStoryEntity(category.ShortStory),
+		Id:        category.Id,
+		CreatedAt: category.CreatedAt,
+		UpdatedAt: category.UpdatedAt,
+		Name:      category.Name,
 	}
 }
 
 func (category Category) ToCategoryEntity() categories.CategoryEntity {
 	return categories.CategoryEntity{
-		Id:         category.Id,
-		CreatedAt:  category.CreatedAt,
-		UpdatedAt:  category.CreatedAt,
-		Name:       category.Name,
-		ShortStory: response.ToArrayShortStoryEntity(category.ShortStory),
+		Id:        category.Id,
+		CreatedAt: category.CreatedAt,
+		UpdatedAt: category.UpdatedAt,
+		Name:      category.Name,
 	}
 }
 

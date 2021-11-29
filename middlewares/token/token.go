@@ -1,7 +1,7 @@
 package token
 
 import (
-	"fmt"
+	"api_short_story/app/config"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -12,15 +12,17 @@ type JwtClaims struct {
 	Id    int    `json:"id"`
 	Name  string `json:"name`
 	Email string `json:"email"`
+	Role  int    `json:"int"`
 	jwt.StandardClaims
 }
 
-var KeyForAuthor = "forAuthor"
-var KeyForAdmin = "forAdmin"
+var configs = config.ReadJsonConfig()
+var KeyForAuthor = configs.KeyJWT.Author
+var KeyForAdmin = configs.KeyJWT.Admin
 
 func GenerateJWT(authorClaims JwtClaims) string {
 	jsonData := jwt.NewWithClaims(jwt.SigningMethodHS256, authorClaims)
-	if authorClaims.Email == "admin@gmail.com" {
+	if authorClaims.Role == 0 {
 		token, err := jsonData.SignedString([]byte(KeyForAdmin))
 		if err != nil {
 			return err.Error()
@@ -37,9 +39,9 @@ func GenerateJWT(authorClaims JwtClaims) string {
 
 func GetAuthorIdFromJWT(c echo.Context) int {
 	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(*JwtClaims)
-	fmt.Println(claims)
-	return int(claims.Id)
+	claims := user.Claims.(jwt.MapClaims)
+	id := claims["id"].(float64)
+	return int(id)
 }
 
 var MiddlewareAdmin = middleware.JWTWithConfig(middleware.JWTConfig{

@@ -2,46 +2,39 @@ package response
 
 import (
 	"api_short_story/business/authors"
-	"api_short_story/controllers/short_story/response"
 	"time"
 )
 
 //untuk controller
 
 type Author struct {
-	Id         uint                  `json:"id"`
-	CreatedAt  time.Time             `json:"createdAt"`
-	UpdatedAt  time.Time             `json:"updatedAt"`
-	Name       string                `json:"name"`
-	Email      string                `json:"email"`
-	Password   string                `json:"password"`
-	Profile    string                `json:"profile"`
-	ShortStory []response.ShortStory `json:"shortStory"`
+	Id        uint      `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	Profile   string    `json:"profile"`
 }
 
 func FromAuthorEntity(author authors.AuthorEntity) Author {
 	return Author{
-		Id:         author.Id,
-		CreatedAt:  author.CreatedAt,
-		UpdatedAt:  author.UpdatedAt,
-		Name:       author.Name,
-		Email:      author.Email,
-		Password:   author.Password,
-		Profile:    author.Profile,
-		ShortStory: response.FromArrayShortStoryEntity(author.ShortStory),
+		Id:        author.Id,
+		CreatedAt: author.CreatedAt,
+		UpdatedAt: author.UpdatedAt,
+		Name:      author.Name,
+		Email:     author.Email,
+		Profile:   author.Profile,
 	}
 }
 
 func (author Author) ToAuthorEntity() authors.AuthorEntity {
 	return authors.AuthorEntity{
-		Id:         author.Id,
-		CreatedAt:  author.CreatedAt,
-		UpdatedAt:  author.UpdatedAt,
-		Name:       author.Name,
-		Email:      author.Email,
-		Password:   author.Password,
-		Profile:    author.Profile,
-		ShortStory: response.ToArrayShortStoryEntity(author.ShortStory),
+		Id:        author.Id,
+		CreatedAt: author.CreatedAt,
+		UpdatedAt: author.UpdatedAt,
+		Name:      author.Name,
+		Email:     author.Email,
+		Profile:   author.Profile,
 	}
 }
 

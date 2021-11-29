@@ -15,6 +15,7 @@ type Author struct {
 	Email     string
 	Password  string
 	Profile   string
+	Role      int
 }
 
 func (author Author) ToAuthorEntity() authors.AuthorEntity {
@@ -26,6 +27,7 @@ func (author Author) ToAuthorEntity() authors.AuthorEntity {
 		Email:     author.Email,
 		Password:  author.Password,
 		Profile:   author.Profile,
+		Role:      author.Role,
 	}
 }
 
@@ -38,5 +40,6 @@ func FromAuthorEntity(author authors.AuthorEntity) Author {
 		Email:     author.Email,
 		Password:  author.Password,
 		Profile:   author.Profile,
+		Role:      author.Role,
 	}
 }

@@ -20,6 +20,12 @@ func NewUseCase(authorRepo AuthorRepoInterface) AuthorUseCaseInterface {
 }
 
 func (usecase *AuthorUseCase) Login(author AuthorEntity) (AuthorEntity, error) {
+	if author.Email == "" {
+		return AuthorEntity{}, errors.New("email empty")
+	}
+	if author.Password == "" {
+		return AuthorEntity{}, errors.New("password empty")
+	}
 	password := author.Password
 	author, err := usecase.repo.Login(author)
 	if err != nil {
@@ -30,6 +36,7 @@ func (usecase *AuthorUseCase) Login(author AuthorEntity) (AuthorEntity, error) {
 			int(author.Id),
 			author.Name,
 			author.Email,
+			author.Role,
 			jwt.StandardClaims{
 				ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 			},
@@ -56,6 +63,14 @@ func (usecase *AuthorUseCase) GetAuthorById(id int) (AuthorEntity, error) {
 	return author, nil
 }
 
+func (usecase *AuthorUseCase) GetAuthorsByName(name string) ([]AuthorEntity, error) {
+	author, err := usecase.repo.GetAuthorsByName(name)
+	if err != nil {
+		return author, err
+	}
+	return author, nil
+}
+
 func (usecase *AuthorUseCase) AddAuthor(author AuthorEntity) (AuthorEntity, error) {
 
 	if author.Name == "" {
@@ -76,11 +91,9 @@ func (usecase *AuthorUseCase) AddAuthor(author AuthorEntity) (AuthorEntity, erro
 	if author.ConfirmPassword != author.Password {
 		return AuthorEntity{}, errors.New("password must same with confirm password")
 	}
-	hashedPassword, err2 := helpers.HashPassword(author.Password)
+	hashedPassword := helpers.HashPassword(author.Password)
 	author.Password = hashedPassword
-	if err2 != nil {
-		return author, err2
-	}
+	author.Role = 1
 	author, err := usecase.repo.AddAuthor(author)
 	if err != nil {
 		return AuthorEntity{}, err
@@ -101,11 +114,8 @@ func (usecase *AuthorUseCase) EditAuthor(id int, author AuthorEntity) (AuthorEnt
 	if author.Profile == "" {
 		return AuthorEntity{}, errors.New("profile empty")
 	}
-	hashedPassword, err2 := helpers.HashPassword(author.Password)
+	hashedPassword := helpers.HashPassword(author.Password)
 	author.Password = hashedPassword
-	if err2 != nil {
-		return author, err2
-	}
 	author, err := usecase.repo.EditAuthor(id, author)
 	if err != nil {
 		return AuthorEntity{}, err

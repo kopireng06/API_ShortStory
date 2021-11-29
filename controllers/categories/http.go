@@ -28,15 +28,6 @@ func (controller *CategoryController) GetAllCategories(c echo.Context) error {
 	return controllers.SuccessResponse(c, response.FromArrayCategoryEntity(categories))
 }
 
-func (controller *CategoryController) GetCategoryById(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	category, err := controller.usecase.GetCategoryById(id)
-	if err != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, err.Error())
-	}
-	return controllers.SuccessResponse(c, response.FromCategoryEntity(category))
-}
-
 func (controller *CategoryController) AddCategory(c echo.Context) error {
 	var categoryAdd response.Category
 	err := c.Bind(&categoryAdd)

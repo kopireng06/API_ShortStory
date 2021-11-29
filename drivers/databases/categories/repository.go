@@ -29,18 +29,6 @@ func (repo *CategoryRepository) GetAllCategories() ([]categories.CategoryEntity,
 	return categoryResponse, result.Error
 }
 
-func (repo *CategoryRepository) GetCategoryById(id int) (categories.CategoryEntity, error) {
-	categoryDB := response.Category{}
-	result := repo.db.Preload("ShortStory").Find(&categoryDB, id)
-	if result.Error != nil {
-		return categories.CategoryEntity{}, result.Error
-	}
-	if result.RowsAffected == 0 {
-		return categoryDB.ToCategoryEntity(), errors.New("record not found")
-	}
-	return categoryDB.ToCategoryEntity(), result.Error
-}
-
 func (repo *CategoryRepository) AddCategory(category categories.CategoryEntity) (categories.CategoryEntity, error) {
 	categoryDB := FromAuthorEntity(category)
 	result := repo.db.Create(&categoryDB)
