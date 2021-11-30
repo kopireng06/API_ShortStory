@@ -4,7 +4,7 @@ name: "running unit test, build docker image and deploy to ec2"
 on: 
   push: 
     branches:
-      - "dev"
+      - "clean"
 jobs:
   unit-test:
     name: "unit test"
