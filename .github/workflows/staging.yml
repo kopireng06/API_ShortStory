@@ -1,3 +1,5 @@
+#ini komen
+
 name: "running unit test, build docker image and deploy to ec2"
 on: 
   push: 
