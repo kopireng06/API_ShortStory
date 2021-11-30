@@ -47,7 +47,7 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/ec2.pem
           chmod 700 ~/.ssh/ec2.pem
-          cat >> ~./ssh/config << END
+          cat >> ~/.ssh/config << END
           Host development
             HostName $SSH_HOST
             User $SSH_USER
