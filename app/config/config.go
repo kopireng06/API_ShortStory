@@ -7,12 +7,6 @@ import (
 )
 
 type Config struct {
-	Database struct {
-		Host     string
-		Name     string
-		Username string
-		Password string
-	}
 	Admin struct {
 		Name     string
 		Email    string
@@ -23,10 +17,16 @@ type Config struct {
 		Author string
 		Admin  string
 	}
+	Database struct {
+		Host     string
+		Name     string
+		Username string
+		Password string
+	}
 }
 
 func ReadJsonConfig() Config {
-	content, err := ioutil.ReadFile("./app/config/config.json")
+	content, err := ioutil.ReadFile("./config.json")
 	if err != nil {
 		log.Fatal("Error when opening file: ", err)
 	}
