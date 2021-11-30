@@ -6,15 +6,30 @@ on:
     branches:
       - "clean"
 jobs:
-  unit-test:
-    name: "unit test"
-    runs-on: "ubuntu-latest"
+  # unit-test:
+  #   name: "unit test"
+  #   runs-on: "ubuntu-latest"
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: setup go
+  #       uses: actions/setup-go@v2
+  #       with:
+  #         go-version: 1.17.2
+  #     - name: running unit test
+  #       run: go test ./... -cover
+  build-push-docker:
+    name: "build image and push registry dockerhub"
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: setup go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.17.2
-      - name: running unit test
-        run: go test ./... -cover
+      - name: build image
+        run: docker build -t naufalghania/api_short_story:1 .
+      - name: login dockerhub
+        uses: docker/login-action@v1
+        with: 
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: push image to dockerhub
+        run: docker push naufalghania/api_short_story:1
+
   
