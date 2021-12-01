@@ -43,7 +43,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/kuiz.pem
+          echo "$SSH_KEY" > ~/.ssh/ec2.pem
           chmod 700 ~/.ssh/ec2.pem
           cat >> ~/.ssh/config << END
           Host development 
