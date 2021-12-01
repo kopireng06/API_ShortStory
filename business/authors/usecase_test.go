@@ -4,12 +4,9 @@ import (
 	"api_short_story/business/authors"
 	"api_short_story/business/authors/mocks"
 	"api_short_story/helpers"
-	"api_short_story/middlewares/token"
 	"errors"
 	"testing"
-	"time"
 
-	"github.com/golang-jwt/jwt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -28,18 +25,17 @@ func setupLogin() {
 		Email:    "alterra@gmail.com",
 		Password: password,
 		Role:     0,
-		Token:    "",
 	}
-	jwtClaims := token.JwtClaims{
-		int(authorResponseFromRepo.Id),
-		authorResponseFromRepo.Name,
-		authorResponseFromRepo.Email,
-		authorResponseFromRepo.Role,
-		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
-		},
-	}
-	authorResponseFromRepo.Token = token.GenerateJWT(jwtClaims)
+	// jwtClaims := token.JwtClaims{
+	// 	int(authorResponseFromRepo.Id),
+	// 	authorResponseFromRepo.Name,
+	// 	authorResponseFromRepo.Email,
+	// 	authorResponseFromRepo.Role,
+	// 	jwt.StandardClaims{
+	// 		ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+	// 	},
+	// }
+	// authorResponseFromRepo.Token = token.GenerateJWT(jwtClaims)
 }
 
 func setupAddAuthor() {
@@ -108,6 +104,7 @@ func TestLogin(t *testing.T) {
 			Password: "123",
 		}
 		entity, err := authorUseCaseInterface.Login(requestLoginEntity)
+		authorResponseFromRepo.Token = entity.Token
 		assert.Equal(t, nil, err)
 		assert.Equal(t, authorResponseFromRepo, entity)
 	})

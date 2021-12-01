@@ -3,9 +3,12 @@ package authors
 import (
 	"api_short_story/business/authors"
 	"api_short_story/controllers/authors/response"
+	"api_short_story/middlewares/token"
 	"api_short_story/models"
 	"errors"
+	"time"
 
+	"github.com/golang-jwt/jwt"
 	"gorm.io/gorm"
 )
 
@@ -28,7 +31,18 @@ func (repo *AuthorRepository) Login(author authors.AuthorEntity) (authors.Author
 	if result.RowsAffected == 0 {
 		return authors.AuthorEntity{}, errors.New("email not registered")
 	}
-	return authorDB.ToAuthorEntity(), nil
+	jwtClaims := token.JwtClaims{
+		int(author.Id),
+		author.Name,
+		author.Email,
+		author.Role,
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+		},
+	}
+	authorResponse := authorDB.ToAuthorEntity()
+	authorResponse.Token = token.GenerateJWT(jwtClaims)
+	return authorResponse, nil
 }
 
 func (repo *AuthorRepository) GetAllAuthors() ([]authors.AuthorEntity, error) {
