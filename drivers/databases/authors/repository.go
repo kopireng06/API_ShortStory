@@ -105,9 +105,6 @@ func (repo *AuthorRepository) EditAuthor(id int, author authors.AuthorEntity) (a
 	if result.RowsAffected == 0 {
 		return authorDB.ToAuthorEntity(), errors.New("record not found")
 	}
-	if authorDB.Id != author.Id {
-		return authorDB.ToAuthorEntity(), errors.New("unauthorized")
-	}
 	authorDB.Email = author.Email
 	authorDB.Name = author.Name
 	authorDB.Password = author.Password
