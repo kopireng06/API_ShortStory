@@ -32,10 +32,10 @@ func (repo *AuthorRepository) Login(author authors.AuthorEntity) (authors.Author
 		return authors.AuthorEntity{}, errors.New("email not registered")
 	}
 	jwtClaims := token.JwtClaims{
-		int(author.Id),
-		author.Name,
-		author.Email,
-		author.Role,
+		int(authorDB.Id),
+		authorDB.Name,
+		authorDB.Email,
+		authorDB.Role,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 		},
