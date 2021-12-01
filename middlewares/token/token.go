@@ -17,8 +17,11 @@ type JwtClaims struct {
 }
 
 var configs = config.ReadJsonConfig()
-var KeyForAuthor = configs.KeyJWT.Author
-var KeyForAdmin = configs.KeyJWT.Admin
+
+// var KeyForAuthor = configs.KeyJWT.Author
+// var KeyForAdmin = configs.KeyJWT.Admin
+var KeyForAuthor = "forAuthor"
+var KeyForAdmin = "forAdmin"
 
 func GenerateJWT(authorClaims JwtClaims) string {
 	jsonData := jwt.NewWithClaims(jwt.SigningMethodHS256, authorClaims)
