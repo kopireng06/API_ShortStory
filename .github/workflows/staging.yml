@@ -4,21 +4,21 @@ on:
     branches:
       - "clean"
 jobs:
-  # unit-test:
-  #   name: "unit test"
-  #   runs-on: "ubuntu-latest"
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: setup go
-  #       uses: actions/setup-go@v2
-  #       with:
-  #         go-version: 1.17.2
-  #     - name: running unit test
-  #       run: go test ./... -cover
+  unit-test:
+    name: "unit test"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.2
+      - name: running unit test
+        run: go test ./... -cover
   build-push-docker:
     name: "build image and push registry dockerhub"
     runs-on: ubuntu-latest
-    # needs: unit-test
+    needs: unit-test
     steps:
       - uses: actions/checkout@v2
       - name: build image 
