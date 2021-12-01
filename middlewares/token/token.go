@@ -1,8 +1,6 @@
 package token
 
 import (
-	"api_short_story/app/config"
-
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -16,7 +14,7 @@ type JwtClaims struct {
 	jwt.StandardClaims
 }
 
-var configs = config.ReadJsonConfig()
+// var configs = config.ReadJsonConfig()
 
 // var KeyForAuthor = configs.KeyJWT.Author
 // var KeyForAdmin = configs.KeyJWT.Admin
