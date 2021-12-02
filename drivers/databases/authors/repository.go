@@ -105,6 +105,10 @@ func (repo *AuthorRepository) EditAuthor(id int, author authors.AuthorEntity) (a
 	if result.RowsAffected == 0 {
 		return authorDB.ToAuthorEntity(), errors.New("record not found")
 	}
+	result2 := repo.db.Where("email = ?", authorDB.Email).First(&authorDB)
+	if result2.RowsAffected != 0 {
+		return authors.AuthorEntity{}, errors.New("email has applied")
+	}
 	authorDB.Email = author.Email
 	authorDB.Name = author.Name
 	authorDB.Password = author.Password
