@@ -1,0 +1,18 @@
+{
+    "admin":{
+        "name":"naufal",
+        "email":"naufal@gmail.com",
+        "password":"naufal123",
+        "profile":"Hi im admin"
+    },
+    "keyJWT":{
+        "author":"forAuthor",
+        "admin":"forAdmin"
+    },
+    "database":{
+        "host":"database-1.csncfmrvzixw.us-east-2.rds.amazonaws.com:3306",
+        "name":"api_short_story",
+        "username":"admin",
+        "password":"Opangkers02"
+    }
+}

@@ -1,48 +1,43 @@
 package main
 
-import "fmt"
+import (
+	"api_short_story/app/routes"
+	authorUsecase "api_short_story/business/authors"
+	categoryUsecase "api_short_story/business/categories"
+	shortStoryUseCase "api_short_story/business/short_story"
+	authorController "api_short_story/controllers/authors"
+	categoryController "api_short_story/controllers/categories"
+	shortStoryController "api_short_story/controllers/short_story"
+	authorRepo "api_short_story/drivers/databases/authors"
+	categoryRepo "api_short_story/drivers/databases/categories"
+	shortStoryRepo "api_short_story/drivers/databases/short_story"
+	"api_short_story/drivers/mysql"
 
-type cetak interface {
-	getNama() string
-	getNIM() string
-}
-
-type mahasiswa struct {
-	nama string
-	nim  string
-}
-
-func (m mahasiswa) getNama() string {
-	return m.nama
-}
-
-func (m mahasiswa) getNIM() string {
-	return m.nim
-}
-
-func cobaInterface(n cetak) {
-	fmt.Println(n)
-}
+	"github.com/labstack/echo/v4"
+)
 
 func main() {
-	// configs.ConnectDB()
-	// e := echo.New()
+	db := mysql.InitialDb()
+	e := echo.New()
 
-	// // group routes for author
-	// eAuthor := e.Group("/author")
-	// eAuthor.POST("/", controllers.InsertAuthor)
-	// eAuthor.GET("/:id", controllers.GetAuthorById)
-	// eAuthor.GET("/search/:name", controllers.GetAuthorByName)
-	// eAuthor.GET("/", controllers.GetAuthor)
+	authorRepoInterface := authorRepo.NewAuthorRepository(db)
+	authorUseCaseInterface := authorUsecase.NewUseCase(authorRepoInterface)
+	authorControllerInterface := authorController.NewAuthorController(authorUseCaseInterface)
 
-	// // group routes for category
-	// eCategory := e.Group("/category")
-	// eCategory.POST("/", controllers.InsertCategory)
-	// eCategory.GET("/", controllers.GetCategory)
+	categoryRepoInterface := categoryRepo.NewCategoryRepository(db)
+	categoryUseCaseInterface := categoryUsecase.NewUseCase(categoryRepoInterface)
+	categoryControllerInterface := categoryController.NewAuthorController(categoryUseCaseInterface)
 
-	// e.Start(":8000")
-	a := mahasiswa{"naufal", "01"}
-	fmt.Println(a.getNIM())
-	cobaInterface(a)
+	shortStoryInterface := shortStoryRepo.NewShortStoryRepository(db)
+	shortStoryUseCaseInterface := shortStoryUseCase.NewUseCase(shortStoryInterface)
+	shortStoryControllerInterface := shortStoryController.NewController(shortStoryUseCaseInterface)
 
+	routesInit := routes.RouteControllerList{
+		AuthorController:     *authorControllerInterface,
+		CategoryController:   *categoryControllerInterface,
+		ShortStoryController: *shortStoryControllerInterface,
+	}
+
+	routesInit.RouteRegister(e)
+	e.Start(":8000")
 }
